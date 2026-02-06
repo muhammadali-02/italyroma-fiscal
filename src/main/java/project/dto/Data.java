@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Data {
-
+    private String printerName;
     private int port;
     private String ipAddress;
     private SaleDto banner;
