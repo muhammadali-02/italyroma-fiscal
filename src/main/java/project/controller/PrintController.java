@@ -32,13 +32,9 @@ public class PrintController {
     }
 
     @PostMapping("/print")
-    public ResponseEntity<?> print(
-            @RequestBody Data data) {
-
+    public ResponseEntity<?> print(@RequestBody Data data) {
         printDate(data);
-
         return new ResponseEntity<>(HttpStatus.OK, HttpStatus.valueOf(200));
-
     }
 
     public static void printDate(Data data) {
@@ -72,9 +68,7 @@ public class PrintController {
                     for (int i = 1; i < wrappedName.length; i++) {
                         sb.append(String.format("%-2s %-25s %-25s\n", "", wrappedName[i], ""));
                     }
-                } else {
-                    sb.append(String.format("%-2d %-25s %-25s\n", number, itemName, priceDetails));
-                }
+                } else sb.append(String.format("%-2d %-25s %-25s\n", number, itemName, priceDetails));
                 number++;
             }
 
@@ -97,15 +91,15 @@ public class PrintController {
             }
 
             sb.append("\n\n\tXaridingiz uchun rahmat!\n\n");
-            String printerName = "XP-58"; // 🔴 printer nomi
-
+            String printerName;
+            if (data.getPrinterName() == null || data.getPrinterName().isEmpty()) printerName = "XP-58";
+            else printerName = data.getPrinterName(); // 🔴 printer nomi
             printReceipt(printerName, data.getIpAddress(), data.getPort(), sb.toString());
-
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            e.fillInStackTrace();
         }
     }
-
 
     private static String[] wrapText(String text, int width) {
         String[] words = text.split(" ");
@@ -117,7 +111,7 @@ public class PrintController {
                 lines.add(currentLine.toString());
                 currentLine.setLength(0);
             }
-            if (currentLine.length() > 0) currentLine.append(" ");
+            if (!currentLine.isEmpty()) currentLine.append(" ");
             currentLine.append(word);
         }
         lines.add(currentLine.toString());
@@ -141,27 +135,22 @@ public class PrintController {
                 escpos.close();
             } catch (Exception e) {
                 System.err.println("Error while printing: " + e.getMessage());
-                e.printStackTrace();
+                e.fillInStackTrace();
             }
         } else {
             try (Socket socket = new Socket(ipAddress, port)) {
                 OutputStream outputStream = socket.getOutputStream();
                 byte[] setEncodingCommand = new byte[]{0x1B, 0x74, 0x11};
                 outputStream.write(setEncodingCommand);
-
                 byte[] receiptData = data.getBytes(Charset.forName("CP866"));
                 outputStream.write(receiptData);
-
                 outputStream.write("\n\n\n\n".getBytes(Charset.forName("CP866")));
-
                 byte[] cutPaperCommand = new byte[]{0x1D, 0x56, 0x00};
                 outputStream.write(cutPaperCommand);
-
                 outputStream.flush();
-
             } catch (Exception e) {
                 System.err.println("Error while printing: " + e.getMessage());
-                e.printStackTrace();
+                e.fillInStackTrace();
             }
         }
     }
