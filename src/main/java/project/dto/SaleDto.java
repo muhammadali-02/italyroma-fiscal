@@ -28,6 +28,7 @@ public class SaleDto {
 
     private Long departmentId;
     private String departmentName;
+    private String departmentAddress;
 
     private List<SaleItemDto> saleItems;
     private List<PaymentDto> payments;

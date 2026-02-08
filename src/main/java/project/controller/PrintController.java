@@ -128,6 +128,8 @@ public class PrintController {
     }
 
     public static void printReceipt(String printerName, String ipAddress, int port, String data, SaleDto banner) {
+        if (banner.getDepartmentAddress() == null || banner.getDepartmentAddress().isEmpty())
+            banner.setDepartmentAddress("Toshkent sh. Chilonzor t. 6 kvartal, 19. \"PARUS\" qarshisida.");
         data = data.replaceAll("‘", "'");
         if (printerName != null && !printerName.isEmpty()) {
             try {
@@ -156,7 +158,7 @@ public class PrintController {
                 escpos.writeLF("________________________________________________").writeLF("");
                 escpos.write(b, "Sotuv: ").writeLF(banner.getSaleNumber());
                 escpos.setCharacterCodeTable(CP866_Cyrillic_2);
-                escpos.writeLF(b, "Qatortol 2 ko'chasi 22, 100096, Тоshkent, O'zbekiston");
+                escpos.writeLF(b, banner.getDepartmentAddress());
                 escpos.write(b, "Sana: ").writeLF(banner.getSaleDate());
 //                escpos.writeLF(b, "Sotuvchi: ").write(banner.getSellerFirstName() + " " + banner.getSellerLastName() + " " + banner.getSellerMiddleName() + "\n");
                 escpos.write(b, "Kassir: ").writeLF(banner.getCashierFirstName() + " " + banner.getCashierLastName() + " " + banner.getCashierMiddleName());
