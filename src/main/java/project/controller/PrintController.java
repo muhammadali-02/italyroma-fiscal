@@ -195,12 +195,12 @@ public class PrintController {
                     escpos.writeLF(b, String.format("%-20s %-25s", "Chegirma:", discount + " UZS"));
                 } else escpos.writeLF(b, String.format("%-20s %-25s", "Jami:", afterPayment + " UZS"));
                 escpos.writeLF("________________________________________________").writeLF("");
-                escpos.write(new BitImageWrapper(), new EscPosImage(new CoffeeImageImpl(ImageIO.read(new File("instagram.jpg"))), new BitonalThreshold(127)))
-                        .write("_italy_roma_");
-                escpos.feed(1);
-                escpos.write(new BitImageWrapper(), new EscPosImage(new CoffeeImageImpl(ImageIO.read(new File("telegram.jpg"))), new BitonalThreshold(127)))
-                        .write("@_italy_roma_");
-                escpos.feed(1);
+//                escpos.write(new BitImageWrapper(), new EscPosImage(new CoffeeImageImpl(ImageIO.read(new File("instagram.jpg"))), new BitonalThreshold(127)))
+//                        .write("italy_roma_");
+//                escpos.feed(1);
+//                escpos.write(new BitImageWrapper(), new EscPosImage(new CoffeeImageImpl(ImageIO.read(new File("telegram.jpg"))), new BitonalThreshold(127)))
+//                        .write("italyroma");
+//                escpos.feed(1);
                 escpos.writeLF("________________________________________________");
                 escpos.writeLF(b, "\n          Xaridingiz uchun rahmat!\n\n\n\n\n\n");
                 escpos.cut(FULL);
